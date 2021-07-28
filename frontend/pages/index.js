@@ -1,16 +1,20 @@
 import React from "react";
 import { fetchAPI } from "../lib/api";
+import Layout from "../components/layout";
+import Seo from "../components/seo";
+import Articles from "../components/articles";
 
 const Home = ({ articles, categories, homepage }) => {
-    console.log(articles);
     return (
-        <div>
-            {articles.map((item, index)=>
-                <div key={index}>
-                    <h1>{item.title}</h1>
+        <Layout categories={categories}>
+            <Seo seo={homepage.seo} />
+            <div className="uk-section">
+                <div className="uk-container uk-container-large">
+                    <h1>{homepage.hero.title}</h1>
+                    <Articles articles={articles} />
                 </div>
-            )}
-        </div>
+            </div>
+        </Layout>
     );
 };
 
@@ -19,7 +23,7 @@ export async function getStaticProps() {
     const [articles, categories, homepage] = await Promise.all([
         fetchAPI("/articles"),
         fetchAPI("/categories"),
-        fetchAPI("/homepage"),
+        fetchAPI("/homepage")
     ]);
 
     return {
